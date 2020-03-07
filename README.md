@@ -4,25 +4,34 @@ A mixed build scripts
 
 ## Requierd
 
-*Visual Studio 2017,2019(with VC v140 tool chain)
-*git bash
+* Visual Studio 2017,2019(with VC v140 tool chain)
+
+* git bash
 
 
 ## Setting
 
 * Open  Visual Studio 201X Tools Command prompt
-* Set Environment 
 
+* Set Environment 
+  
+  ```Shell
   set DOWNLOAD=C:/Users/%USERNAME%/.download
   set INSTALL=C:/Users/%USERNAME%/.install
   set PATH=C:\Program Files\Git\usr\bin;%PATH%
   call "C:\Program Files\Git\git-cmd.exe" --no-cd --command=usr/bin/bash.exe -l -i
+  ```
   
 * Build quick
+
+  ```Shell
   nmake 
-  
+  ```
 * Build all
+
+  ```Shell
   nmake all
+  ```
   
 ## Reference
 
