@@ -2,6 +2,14 @@
 # この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
 ################################################################################
 
-/.vs
 /build
 *.sqlite
+/.vs
+*.log
+/out/build/x64-Debug
+/out/build/x64-Release
+/2017x64-Debug
+/cuda
+/all
+/debug
+/release

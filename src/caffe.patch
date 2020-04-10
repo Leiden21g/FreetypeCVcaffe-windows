@@ -160,6 +160,9 @@ index aa4ad2a..42fe435 100644
 +install(DIRECTORY ${CMAKE_PREFIX_PATH}/share/ DESTINATION share)
 +install(FILES ${CMAKE_PREFIX_PATH}/caffe-builder-config.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
 +install(FILES ${CMAKE_PREFIX_PATH}/prependpath.bat DESTINATION bin)
+diff --git a/VideoTest.mp4 b/VideoTest.mp4
+new file mode 100644
+index 0000000..e69de29
 diff --git a/cmake/CaffeGetPrerequisites.cmake b/cmake/CaffeGetPrerequisites.cmake
 new file mode 100644
 index 0000000..bf5bc27
@@ -1592,7 +1595,7 @@ index 0000000..5f97f29
 +# endif()
 \ No newline at end of file
 diff --git a/cmake/Misc.cmake b/cmake/Misc.cmake
-index fcb2464..653a76a 100644
+index fcb2464..e506c38 100644
 --- a/cmake/Misc.cmake
 +++ b/cmake/Misc.cmake
 @@ -1,5 +1,7 @@
@@ -1600,7 +1603,7 @@ index fcb2464..653a76a 100644
 -set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Possible configurations" FORCE)
 +﻿# ---[ Configuration types
 +set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo" CACHE STRING "Possible configurations" FORCE)
-+# RelWithDebInfoの場合、libprotobuf.lib をlibprotobufd.libに変更すべし
++# in case RelWithDebInfo, file name libprotobuf.lib will be libprotobufd.lib
 +
  mark_as_advanced(CMAKE_CONFIGURATION_TYPES)
  
@@ -2145,13 +2148,157 @@ index 090f86c..3755461 100644
  
  ################################################################################################
 diff --git a/cmake/Templates/CaffeConfig.cmake.in b/cmake/Templates/CaffeConfig.cmake.in
-index 77c4059..e05f436 100644
+index 77c4059..f17719d 100644
 --- a/cmake/Templates/CaffeConfig.cmake.in
 +++ b/cmake/Templates/CaffeConfig.cmake.in
-@@ -37,6 +37,54 @@ if(@USE_OPENCV@)
+@@ -37,6 +37,198 @@ if(@USE_OPENCV@)
    endif()
  endif()
  
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
 +# Handle other imported targets libraries
 +if(@GFLAGS_IMPORTED@)
 +  find_package(gflags REQUIRED NO_MODULE)
@@ -2205,10 +2352,10 @@ index 77c4059..e05f436 100644
  
 diff --git a/cmake/Templates/CaffeConfig.cmake.in.orig b/cmake/Templates/CaffeConfig.cmake.in.orig
 new file mode 100644
-index 0000000..04d5d97
+index 0000000..73cf814
 --- /dev/null
 +++ b/cmake/Templates/CaffeConfig.cmake.in.orig
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,151 @@
 +# Config file for the Caffe package.
 +#
 +# Note:
@@ -2245,6 +2392,78 @@ index 0000000..04d5d97
 +      find_package(OpenCV REQUIRED)
 +    endif()
 +    unset(Caffe_OpenCV_CONFIG_PATH)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
++  endif()
++endif()
++
++# Handle other imported targets libraries
++if(@GFLAGS_IMPORTED@)
++  find_package(gflags REQUIRED NO_MODULE)
++endif()
++
++if(@GLOG_IMPORTED@)
++  find_package(glog REQUIRED NO_MODULE)
++endif()
++
++if(@HDF5_IMPORTED@)
++  find_package(HDF5 COMPONENTS C HL REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LMDB@ AND @LMDB_IMPORTED@)
++  find_package(LMDB REQUIRED NO_MODULE)
++endif()
++
++if(@USE_LEVELDB@ AND @LEVELDB_IMPORTED@)
++  find_package(LevelDB REQUIRED NO_MODULE)
++  if(@SNAPPY_IMPORTED@)
++    find_package(Snappy REQUIRED NO_MODULE)
 +  endif()
 +endif()
 +
@@ -2385,10 +2604,10 @@ index 0000000..29e77b0
 +
 diff --git a/cmake/WindowsDownloadPrebuiltDependencies.cmake b/cmake/WindowsDownloadPrebuiltDependencies.cmake
 new file mode 100644
-index 0000000..9116442
+index 0000000..8c2115e
 --- /dev/null
 +++ b/cmake/WindowsDownloadPrebuiltDependencies.cmake
-@@ -0,0 +1,120 @@
+@@ -0,0 +1,124 @@
 +set(DEPENDENCIES_VERSION 1.1.0)
 +set(DEPENDENCIES_NAME_1800_27 libraries_v120_x64_py27_${DEPENDENCIES_VERSION})
 +set(DEPENDENCIES_NAME_1900_27 libraries_v140_x64_py27_${DEPENDENCIES_VERSION})
@@ -2434,14 +2653,18 @@ index 0000000..9116442
 +        message(STATUS "Building without python. Prebuilt dependencies will default to Python 3.5")
 +        set(_pyver 35)
 +    endif()
-+    set(MSVC_VERSION "1900")
-+    if(NOT DEFINED DEPENDENCIES_URL_${MSVC_VERSION}_${_pyver})
-+        message(FATAL_ERROR "Could not find url for MSVC version = ${MSVC_VERSION} and Python version = ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.")
++	if(MSVC_VERSION GREATER "1900")
++	  set(VC_VER "1900")
++	else()
++	  set(VC_VER ${MSVC_VERSION})
++	endif()
++    if(NOT DEFINED DEPENDENCIES_URL_${VC_VER}_${_pyver})
++        message(FATAL_ERROR "Could not find url for MSVC version = ${VC_VER} and Python version = ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.")
 +    endif()
 +    # set the dependencies URL and SHA1
-+    set(DEPENDENCIES_URL ${DEPENDENCIES_URL_${MSVC_VERSION}_${_pyver}})
-+    set(DEPENDENCIES_SHA ${DEPENDENCIES_SHA_${MSVC_VERSION}_${_pyver}})
-+    set(CAFFE_DEPENDENCIES_DIR ${CAFFE_DEPENDENCIES_ROOT_DIR}/${DEPENDENCIES_NAME_${MSVC_VERSION}_${_pyver}})
++    set(DEPENDENCIES_URL ${DEPENDENCIES_URL_${VC_VER}_${_pyver}})
++    set(DEPENDENCIES_SHA ${DEPENDENCIES_SHA_${VC_VER}_${_pyver}})
++    set(CAFFE_DEPENDENCIES_DIR ${CAFFE_DEPENDENCIES_ROOT_DIR}/${DEPENDENCIES_NAME_${VC_VER}_${_pyver}})
 +
 +    foreach(_dir ${CAFFE_DEPENDENCIES_ROOT_DIR}
 +                 ${CAFFE_DEPENDENCIES_DOWNLOAD_DIR}
@@ -2607,6 +2830,17 @@ index 70a0065..8cca27d 100644
  
  execute_process(
      COMMAND ${LINT_COMMAND} ${LINT_SOURCES}
+diff --git a/demo_yolo_detect.sh b/demo_yolo_detect.sh
+new file mode 100644
+index 0000000..0b8c9be
+--- /dev/null
++++ b/demo_yolo_detect.sh
+@@ -0,0 +1,5 @@
++yolo_detect E:/src/ws/Release/Depends/src/caffe/models/cityscapes/mobilenet_yolov3_deploy.prototxt \
++D:/dataset/citycapes/mobilenet_yolov3_deploy_iter_46000.caffemodel \
++-detect_mode 1 -cpu_mode gpu -file_type image -wait_time 1 -mean_value 1.0,1.0,1.0 -normalize_value 0.007843 -confidence_threshold 0.3 \
++-indir D:/dataset/aie/test_images -ext jpg
++
 diff --git a/examples/CMakeLists.txt b/examples/CMakeLists.txt
 index 43bbcb8..e3db723 100644
 --- a/examples/CMakeLists.txt
@@ -6110,6 +6344,40 @@ index 3789450..ec162ba 100644
 +    caffe_install_prerequisites(${name} DESTINATION ${CMAKE_INSTALL_BINDIR})
 +  endif()
  endforeach(source)
+diff --git a/tools/caffe.cpp b/tools/caffe.cpp
+index 1b876df..bc9d738 100644
+--- a/tools/caffe.cpp
++++ b/tools/caffe.cpp
+@@ -206,7 +206,9 @@ int train() {
+   }
+ 
+   vector<int> gpus;
++#ifndef CPU_ONLY
+   get_gpus(&gpus);
++#endif
+   if (gpus.size() == 0) {
+     LOG(INFO) << "Use CPU.";
+     Caffe::set_mode(Caffe::CPU);
+@@ -277,7 +279,9 @@ int test() {
+ 
+   // Set device id and mode
+   vector<int> gpus;
++#ifndef CPU_ONLY
+   get_gpus(&gpus);
++#endif
+   if (gpus.size() != 0) {
+     LOG(INFO) << "Use GPU with device ID " << gpus[0];
+ #ifndef CPU_ONLY
+@@ -350,7 +354,9 @@ int time() {
+ 
+   // Set device id and mode
+   vector<int> gpus;
++#ifndef CPU_ONLY
+   get_gpus(&gpus);
++#endif
+   if (gpus.size() != 0) {
+     LOG(INFO) << "Use GPU with device ID " << gpus[0];
+     Caffe::SetDevice(gpus[0]);
 diff --git a/tools/convert_annoset.cpp b/tools/convert_annoset.cpp
 index 014ca37..1c32007 100644
 --- a/tools/convert_annoset.cpp

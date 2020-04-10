@@ -92,8 +92,8 @@ if(CUDA_FOUND)
 	else()
 	  set(caffeCPU_ONLY "-DCPU_ONLY:BOOL=ON")
 	endif()
-	set(OpencvCUDA "-DWITH_CUDA=ON" )
 	caffe_detect_installed_gpus(__cuda_arch_bin)
+	set(OpencvCUDA -DWITH_CUDA=ON -DCUDA_ARCH_BIN:STRING="${__cuda_arch_bin}" -DWITH_CUDNN=OFF)
 	  # remove dots and convert to lists
 	  string(REGEX REPLACE "\\." "" _cuda_arch_bin "${__cuda_arch_bin}")
 	message(STATUS "__cuda_arch_bin :" ${__cuda_arch_bin})
@@ -101,7 +101,6 @@ else()
 	message(STATUS "CUDA NOT FOUND")
 	set(CPU_ONLY "-DCPU_ONLY:BOOL=ON")
 endif()
-
 
 if( (EXISTS $ENV{DOWNLOAD}/caffe/.git) AND
 	(EXISTS $ENV{DOWNLOAD}/freetype/.git) AND
@@ -151,6 +150,9 @@ ExternalProject_Add( zlib
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
 )
 set(ZLIB_LIBRARY  ${CMAKE_INSTALL_PREFIX})
+set(ZLIB_ARG -DZLIB_INCLUDE_DIR:PATH=${CMAKE_INSTALL_PREFIX}/include
+ -DZLIB_LIBRARY_DEBUG:FILEPATH=${CMAKE_INSTALL_PREFIX}/lib/zlib.lib
+ -DZLIB_LIBRARY_RELEASE:FILEPATH=${CMAKE_INSTALL_PREFIX}/lib/zlib.lib)
 
 ExternalProject_Add( freetype
   DEPENDS zlib
@@ -204,13 +206,11 @@ ExternalProject_Add( opencv_contrib
 
 if(ALL_BUILD)
   set(OPENCV_ARGS
-	-DBUILD_EXAMPLES=ON -DINSTALL_C_EXAMPLES=ON
-	-WITH_OPENMP=ON -DWITH_OPENGL=ON -DBUILD_opencv_viz=OFF
-	${OpencvCUDA} -DCUDA_ARCH_BIN=${__cuda_arch_bin} -DCUDA_ARCH_PTX=${__cuda_arch_bin} -DWITH_CUDNN=OFF)
+	-DBUILD_EXAMPLES=ON -DINSTALL_C_EXAMPLES=ON)
 else()
   set(OPENCV_ARGS
  -DBUILD_EXAMPLES=OFF -DINSTALL_C_EXAMPLES=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF
- -WITH_OPENMP=OFF -DWITH_OPENGL=ON -DBUILD_opencv_viz=OFF -DBUILD_opencv_apps:BOOL=OFF
+ -DBUILD_opencv_apps:BOOL=OFF
  -DBUILD_opencv_aruco:BOOL=OFF -DBUILD_opencv_bgsegm:BOOL=OFF
  -DBUILD_opencv_bioinspired:BOOL=OFF -DBUILD_opencv_calib3d:BOOL=OFF
  -DBUILD_opencv_ccalib:BOOL=OFF -DBUILD_opencv_datasets:BOOL=OFF
@@ -238,6 +238,8 @@ ExternalProject_Add( opencv
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
 	-DOPENCV_EXTRA_MODULES_PATH=${DEPEND_LIB_ROOT}/src/opencv_contrib/modules
 	-DBUILD_ZLIB:BOOL=OFF -DBUILD_opencv_freetype:BOOL=ON -DWITH_FREETYPE:BOOL=ON
+	${OpencvCUDA}	-DWITH_TBB:BOOL=ON -DMKL_WITH_TBB:BOOL=ON -DMKL_WITH_OPENMP:BOOL=ON -DWITH_OPENGL=ON
+    -DBUILD_opencv_viz=OFF -DWITH_VTK:BOOL=OFF
 	${OPENCV_ARGS} ${ZLIB_ARG} 
 	-DCUDA_NVCC_FLAGS:STRING=-w
 	-DCMAKE_CXX_FLAGS:STRING="/DWIN32 /D_WINDOWS /W3 /GR /EHsc /wd4819 /wd4706 /wd4702 /wd4505 /wd4793 /wd4267 /wd4244 /wd5999 /wd4661"
@@ -277,7 +279,7 @@ ExternalProject_Add( caffe
 	-DCUDA_ARCH_BIN:STRING=${_cuda_arch_bin} -DCUDA_ARCH_PTX:STRING=${_cuda_arch_bin}
 	-DCUDA_NVCC_FLAGS:STRING=-w
 )
-# $ cd build/Depends/src/caffe/ && git diff f1f15be22ea7f2d9f32e3a515ff8500dea22c524 > ../../../../src/caffe.patch
+# $ cd build/Depends/src/caffe/ && git diff f1f15be22ea7f2d9f32e3a515ff8500dea22c524 >  ../../../../ws/src/caffe.patch
 
 #  TEST_BEFORE_INSTALL true
 #  TEST_COMMAND ${CMAKE_COMMAND} --build ${caffeDIR} --config Release --target runtest
